@@ -26,55 +26,90 @@ const employeeData = [
     name: `role`,
     choices: [`Engineer`, `Intern`, `Manager`],
   },
+];
+
+const managerData = [
   {
-    type: `confirm`,
-    name: `confirmAddEmployee`,
-    message: `Would you like to add another employee?`,
-    default: true,
+    type: `input`,
+    name: `officeNumber`,
+    message: `What is the manager's office number?`,
   },
 ];
 
-const ManagerData = [];
+const engineerData = [
+  {
+    type: `input`,
+    name: `github`,
+    message: `What is the engineer's github username?`,
+  },
+];
 
-const EngineerData = [];
+const internData = [
+  {
+    text: `input`,
+    name: `school`,
+    message: `What school does the intern attend?`,
+  },
+];
 
-const internData = [];
+function addEmployee() {
+  return inquirer.prompt([
+    {
+      type: `confirm`,
+      name: `confirmAddEmployee`,
+      message: `Would you like to add another employee?`,
+      default: true,
+    },
+  ]);
+}
 
-function collectManagerData() {}
-
-function collectEngineerData() {}
-
-function collectInternData() {}
-//prettier-ignore
-return inquirer
-    .prompt(employeeData)
+function collectManagerData() {
+  //prettier-ignore
+  return inquirer
+    .prompt(managerData)
     .then(data => {
-        const newEmployee = new Employee(data.name, data.id, data.email, data.role)
-        
-        if (data.role === `Manager`) {
-            collectManagerData();
-        } else if (data.role === `Engineer`) {
-            collectEngineerData();
-        } else {
-            collectInternData();
-        }
-
-         if (data.confirmAddEmployee) {
-             CollectEmployeeData();
-         }
+        const newManager = new Manager(data)
+        addEmployee();
     })
+}
+
+function collectEngineerData() {
+  //prettier-ignore
+  return inquirer
+    .prompt(engineerData)
+    .then(data => {
+        console.log(data);
+        const newEngineer = new Engineer(data)
+        addEmployee();
+    })
+}
+
+function collectInternData() {
+  //prettier-ignore
+  return inquirer
+      .prompt(internData)
+      .then(data => {
+          const newIntern = Intern(data)
+          addEmployee();
+      })
+}
+
+function collectEmployeeData() {
+  //prettier-ignore
+  return inquirer
+      .prompt(employeeData)
+      .then(data => {
+          const newEmployee = new Employee(data.name, data.id, data.email, data.role)
+          
+          if (data.role === `Manager`) {
+              collectManagerData();
+          } else if (data.role === `Engineer`) {
+              collectEngineerData();
+          } else {
+              collectInternData();
+          }
+  
+      })
+}
 
 collectEmployeeData();
-
-// )
-//     .then((newEmployee) => {
-//       return new Employee(newEmployee.name, newEmployee.id, newEmployee.email, newEmployee.role);
-//     })
-//     .then(({ confirmAddEmployee }) => {
-//       if (confirmAddEmployee === true) {
-//         return new EmployeeEntry().newEmployee();
-//       } else {
-//         return console.log(`nope`);
-//       }
-//     });
-// ]
